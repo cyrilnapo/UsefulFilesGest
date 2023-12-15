@@ -35,5 +35,14 @@ param(
     [string]$path=$PSScriptRoot
 )
 
+clear-host
 
-$path
+$menuChoice = read-host "Que voulez vous faire ?
+
+    a) Chercher via criteres
+    b) Gestion des doublons de contenu
+    c) Allegement du repertoire
+    
+    d) Quitter
+    
+>"
