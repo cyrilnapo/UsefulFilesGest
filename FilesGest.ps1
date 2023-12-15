@@ -19,7 +19,7 @@ Ce script permet de choisir entre plusieurs options d'actions sur les fichiers :
 
 .PARAMETER path
 Repertoire dans lequel le gestionnaire va agir
- 
+
 .INPUTS
  -
  
@@ -29,3 +29,11 @@ Repertoire dans lequel le gestionnaire va agir
 .EXAMPLE
 
 #>
+
+param(
+    [Parameter(mandatory=$false)]
+    [string]$path=$PSScriptRoot
+)
+
+
+$path
