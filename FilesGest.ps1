@@ -46,3 +46,22 @@ $menuChoice = read-host "Que voulez vous faire ?
     d) Quitter
     
 >"
+
+switch ($menuChoice){
+    "a"{
+
+    }
+
+    "b"{
+
+    }
+
+    "c"{
+
+    }
+
+    "d"{
+        Clear-Host
+        exit
+    }
+}
