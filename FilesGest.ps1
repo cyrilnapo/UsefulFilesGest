@@ -47,8 +47,11 @@ $menuChoice = read-host "Que voulez vous faire ?
     
 >"
 
+$files = Get-ChildItem $path -Recurse
+
 switch ($menuChoice){
     "a"{
+        
 
     }
 
