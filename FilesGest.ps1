@@ -35,7 +35,16 @@ param(
     [string]$path=$PSScriptRoot
 )
 
-clear-host
+if(Test-Path $path){
+    $files = Get-ChildItem $path -Recurse
+    clear-host
+}else{
+    Clear-Host
+    Write-Host "Chemin non valide, veuillez reessayer" -ForegroundColor Red
+    exit
+}
+
+
 
 $menuChoice = read-host "Que voulez vous faire ?
 
@@ -47,7 +56,8 @@ $menuChoice = read-host "Que voulez vous faire ?
     
 >"
 
-$files = Get-ChildItem $path -Recurse
+
+    
 
 switch ($menuChoice){
     "a"{
@@ -57,22 +67,30 @@ switch ($menuChoice){
 
     "b"{
         $identicalFiles = @()
-
+        $nbIdentiticalFiles = 0
 
         for ($i = 0; $i -lt $files.Count; $i++) {
             for ($j = $i + 1; $j -lt $files.Count; $j++) {
-                $file1 = Get-Content $files[$i].FullName 
+                $file1 = Get-Content $files[$i].FullName
                 $file2 = Get-Content $files[$j].FullName 
         
                 # Comparez le contenu des fichiers
                 if ($file1 -eq $file2) {
                     $identicalFiles += @{
-                        File1 = $files[$i].FullName
-                        File2 = $files[$j].FullName
+                        File1 = $files[$i].BaseName
+                        File2 = $files[$j].BaseName
                     }
+                    $nbIdentiticalFiles++
                 }
+                
             }
         }
+        if($nbIdentiticalFiles -eq 0){
+            write-host "No identical files detected !" -ForegroundColor Green
+        }else{
+            write-host "$nbIdentiticalFiles identical files has been detected !" -ForegroundColor Red
+        }
+        #demander si ils veulent les supprimer, y/n 
     }
 
     "c"{
