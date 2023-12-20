@@ -45,66 +45,82 @@ if(Test-Path $path){
 }
 
 
+while(1){
+    $menuChoice = read-host "`nQue voulez vous faire ?
 
-$menuChoice = read-host "Que voulez vous faire ?
-
-    a) Chercher via criteres
-    b) Gestion des doublons de contenu
-    c) Allegement du repertoire
-    
-    d) Quitter
-    
->"
+        a) Chercher via criteres
+        b) Gestion des doublons de contenu
+        c) Allegement du repertoire
+        
+        d) Quitter
+        
+    >"
 
 
-    
-
-switch ($menuChoice){
-    "a"{
         
 
-    }
+    switch ($menuChoice){
+        "a"{
+            
 
-    "b"{
-        $identicalFiles = @()
-        $nbIdentiticalFiles = 0
+        }
 
-        for ($i = 0; $i -lt $files.Count; $i++) {
-            for ($j = $i + 1; $j -lt $files.Count; $j++) {
-                $file1 = Get-Content $files[$i].FullName
-                $file2 = Get-Content $files[$j].FullName 
-        
-                # Comparez le contenu des fichiers
-                if ($file1 -eq $file2) {
-                    $identicalFiles += @{
-                        File1 = $files[$i].BaseName
-                        File2 = $files[$j].BaseName
+        "b"{
+            clear-host
+            $identicalFiles = @()
+            $nbIdentiticalFiles = 0
+
+            for ($i = 0; $i -lt $files.Count; $i++) {
+                for ($j = $i + 1; $j -lt $files.Count; $j++) {
+                    $file1 = Get-Content $files[$i].FullName
+                    $file2 = Get-Content $files[$j].FullName 
+            
+                    # Comparez le contenu des fichiers
+                    if ($file1 -eq $file2) {
+                        $identicalFiles += @{
+                            File1 = $files[$i].BaseName
+                            File2 = $files[$j].BaseName
+                        }
+                        $nbIdentiticalFiles += 0.5
                     }
-                    $nbIdentiticalFiles += 0.5
+                    
+                }
+            }
+            if($nbIdentiticalFiles -eq 0){
+                write-host "No identical files detected !" -ForegroundColor Green
+            }else{
+                write-host "$nbIdentiticalFiles identical files has been detected ! (see below)" -ForegroundColor Red
+
+                foreach($pair in $identicalFiles){
+                    write-host "       - $($pair.File1) and $($pair.File2)" -ForegroundColor Red
+                }
+                do{
+                    $deleteChoice = read-host "`nVoulez vous supprimer les fichiers doublons ? Y/N" 
+
+                }while($deleteChoice -ne "y" -and $deleteChoice -ne "n")
+                switch ($deleteChoice){
+                    "y"{
+                        clear-host
+                        write-host "Suppression des doublons en cours..." -foregroundcolor darkyellow
+                        #suppression ici
+                    }
+                    "n"{
+                        clear-host
+                        write-host "Doublons non-supprimés `n" -foregroundcolor blue
+                    }
                 }
                 
             }
+            
         }
-        if($nbIdentiticalFiles -eq 0){
-            write-host "No identical files detected !" -ForegroundColor Green
-        }else{
-            write-host "$nbIdentiticalFiles identical files has been detected ! (see below)" -ForegroundColor Red
 
-            foreach($pair in $identicalFiles){
-                write-host "       - $($pair.File1) and $($pair.File2)" -ForegroundColor Red
-            }
+        "c"{
 
-            $deleteChoice = read-host "Voulez vous supprimer les fichiers doublons ? Y/N" 
         }
-        
-    }
 
-    "c"{
-
-    }
-
-    "d"{
-        Clear-Host
-        exit
+        "d"{
+            Clear-Host
+            exit
+        }
     }
 }
