@@ -80,7 +80,7 @@ switch ($menuChoice){
                         File1 = $files[$i].BaseName
                         File2 = $files[$j].BaseName
                     }
-                    $nbIdentiticalFiles++
+                    $nbIdentiticalFiles += 0.5
                 }
                 
             }
@@ -88,9 +88,15 @@ switch ($menuChoice){
         if($nbIdentiticalFiles -eq 0){
             write-host "No identical files detected !" -ForegroundColor Green
         }else{
-            write-host "$nbIdentiticalFiles identical files has been detected !" -ForegroundColor Red
+            write-host "$nbIdentiticalFiles identical files has been detected ! (see below)" -ForegroundColor Red
+
+            foreach($pair in $identicalFiles){
+                write-host "       - $($pair.File1) and $($pair.File2)" -ForegroundColor Red
+            }
+
+            $deleteChoice = read-host "Voulez vous supprimer les fichiers doublons ? Y/N" 
         }
-        #demander si ils veulent les supprimer, y/n 
+        
     }
 
     "c"{
