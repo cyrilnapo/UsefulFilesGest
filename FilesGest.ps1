@@ -54,10 +54,7 @@ while(1){
         
         d) Quitter
         
-    >"
-
-
-        
+    >"  
 
     switch ($menuChoice){
         "a"{
@@ -72,17 +69,24 @@ while(1){
 
             for ($i = 0; $i -lt $files.Count; $i++) {
                 for ($j = $i + 1; $j -lt $files.Count; $j++) {
-                    $file1 = Get-Content $files[$i].FullName
-                    $file2 = Get-Content $files[$j].FullName 
-            
-                    # Comparez le contenu des fichiers
-                    if ($file1 -eq $file2) {
-                        $identicalFiles += @{
-                            File1 = $files[$i].BaseName
-                            File2 = $files[$j].BaseName
+                    #verifie si c'est un dossier ou un fichier, si dossier alors ne pas faire get-content
+                    $verif1 = get-item $files[$i].FullName
+                    $verif2 = get-item $files[$j].FullName 
+
+                    if($verif1 -is [system.io.fileinfo] -and $verif2 -is [system.io.fileinfo]){
+                        $file1 = Get-Content $files[$i].FullName
+                        $file2 = Get-Content $files[$j].FullName 
+                
+                        # Comparez le contenu des fichiers
+                        if ($file1 -eq $file2) {
+                            $identicalFiles += @{
+                                File1 = $files[$i].BaseName
+                                File2 = $files[$j].BaseName
+                            }
+                            $nbIdentiticalFiles += 0.5
                         }
-                        $nbIdentiticalFiles += 0.5
                     }
+                    
                     
                 }
             }
